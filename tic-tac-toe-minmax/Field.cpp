@@ -1,5 +1,5 @@
 #include "Field.h"
-
+#include<vector>
 Board::Board(int n)
 {
 	this->n = n;
@@ -43,7 +43,68 @@ void Board::Print()
 	}
 }
 
-void Board::MakeMove(int r, int c, char v)
+void Board::MakeMove(int x, int y, char v)
 {
-	fields[c][r] = v;
+		fields[y][x] = v;
+		!player;
+}
+
+void Board::MakeMove(int x, int y, bool p)
+{
+	char v;
+	if (p)
+		v = 'X';
+	else
+		v = 'O';
+	MakeMove(x, y, v);
+}
+
+char Board::CheckWin()
+{
+	int n = Size();
+
+
+	char field = CheckField(0, 0);
+	if (field)
+		for (int j = 1; j < n; j++) {
+			if (CheckField(j, j) != field)
+				break;
+			else if (j == n - 1)
+				return field;
+		}
+
+	field = CheckField(n - 1, n - 1);
+	if (field)
+		for (int j = n-1; j >= 0; j--)
+		{
+			if (CheckField(j, j) != field)
+				break;
+			else if (j == 0)
+				return field;
+		}
+	 
+	for (int i = 0; i < n; i++)
+	{
+		field = CheckField(i, 0);
+		if (field)
+			for (int j = 1; j < n; j++)
+			{
+				if (CheckField(i, j) != field)
+					break;
+				else if (j == n - 1)
+					return field;
+			}
+
+		field = CheckField(0, i);
+		if (field)
+			for (int j = 1; j < n; j++)
+			{
+				if (CheckField(j, i) != field)
+					break;
+				else if (j == n - 1)
+					return field;
+			}
+
+	}
+	return NULL;
 }

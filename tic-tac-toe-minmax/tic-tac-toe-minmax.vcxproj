@@ -133,6 +133,7 @@
   <ItemGroup>
     <ClInclude Include="Field.h" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="Bot.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
