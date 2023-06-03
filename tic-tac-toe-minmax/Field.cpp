@@ -1,5 +1,6 @@
 #include "Field.h"
 #include<vector>
+#include<iostream>
 Board::Board(int n)
 {
 	this->n = n;
@@ -11,8 +12,17 @@ Board::Board(int n)
 			temp.push_back(NULL);
 		}
 		fields.push_back(temp);
+
 	}
 }
+
+
+char Board::CheckField(int y, int x)
+{
+	char temp;
+	temp = fields[y][x]; return temp;
+}
+
 
 void Board::Print()
 {
@@ -43,13 +53,13 @@ void Board::Print()
 	}
 }
 
-void Board::MakeMove(int x, int y, char v)
+void Board::MakeMove(int y, int x, char v)
 {
 		fields[y][x] = v;
-		!player;
+		
 }
 
-void Board::MakeMove(int x, int y, bool p)
+void Board::MakeMove(int y, int x, bool p)
 {
 	char v;
 	if (p)
@@ -61,50 +71,110 @@ void Board::MakeMove(int x, int y, bool p)
 
 char Board::CheckWin()
 {
-	int n = Size();
-
-
-	char field = CheckField(0, 0);
-	if (field)
-		for (int j = 1; j < n; j++) {
-			if (CheckField(j, j) != field)
-				break;
-			else if (j == n - 1)
-				return field;
-		}
-
-	field = CheckField(n - 1, n - 1);
-	if (field)
-		for (int j = n-1; j >= 0; j--)
-		{
-			if (CheckField(j, j) != field)
-				break;
-			else if (j == 0)
-				return field;
-		}
-	 
-	for (int i = 0; i < n; i++)
+	for (int row = 0; row < Size(); row++)
 	{
-		field = CheckField(i, 0);
-		if (field)
-			for (int j = 1; j < n; j++)
+		char field = (row, 0);
+		for (int col = 0; col < Size(); col++)
+		{
+			if (field != (row, col))
 			{
-				if (CheckField(i, j) != field)
-					break;
-				else if (j == n - 1)
-					return field;
+				break;
 			}
-
-		field = CheckField(0, i);
-		if (field)
-			for (int j = 1; j < n; j++)
+			else if (col == Size() - 1)
 			{
-				if (CheckField(j, i) != field)
-					break;
-				else if (j == n - 1)
-					return field;
+				return field;
 			}
-
+		}
 	}
-	return NULL;
+
+	//Checking for Columns for X or O victory.
+   //for (int col = 0; col < b.Size(); col++)
+   //{
+   //	if (b(0, col) == b(1, col) &&
+   //		b(1, col) == b(2, col))
+   //	{
+   //		if (b(0, col) == player)
+   //			return +10;
+
+   //		else if (b(0, col) == opponent)
+   //			return -10;
+   //	}
+   //}
+	for (int col = 0; col < Size(); col++)
+	{
+		char field = (0, col);
+		for (int row = 0; row < Size(); row++)
+		{
+			if ((row, col) != field)
+			{
+				break;
+			}
+			else if (row == Size() - 1)
+			{
+				return field;
+			}
+		}
+	}
+
+	// Checking for Diagonals for X or O victory.
+	//if (b(0, 0) == b(1, 1) && b(1, 1) == b(2, 2))
+	//{
+	//	if (b(0, 0) == player)
+	//		return +10;
+	//	else if (b(0, 0) == opponent)
+	//		return -10;
+	//}
+	char field = (0, 0);
+	for (int i = 1; i < Size(); i++)
+	{
+		if ((i, i) != field)
+		{
+			break;
+		}
+		else if (i == (Size() - 1))
+		{
+			return field;
+		}
+	}
+
+	//if (b(0, 2) == b(1, 1) && b(1, 1) == b(2, 0))
+	//{
+	//	if (b(0, 2) == player)
+	//		return +10;
+	//	else if (b(0, 2) == opponent)
+	//		return -10;
+	//}
+	field = (0, Size() - 1);
+	for (int i = 0; i < Size(); i++)
+	{
+		if (field != (i, Size() - 1 - i))
+		{
+			break;
+		}
+		else if (i == Size() - 1)
+		{
+			return field;
+		}
+	}
+	// Else if none of them have won then return 0
+	return 0;
 }
+
+bool Board::MovesLeft()
+{
+	for (int i = 0; i < Size(); i++)
+		for (int j = 0; j < Size(); j++)
+		{
+			if (CheckField(i, j)== NULL)
+			return true;
+		}
+	return false;
+}
+char& Board::operator()(int row, int column) //first y then x
+{
+	return fields[row][column];
+}
+
+
+
+

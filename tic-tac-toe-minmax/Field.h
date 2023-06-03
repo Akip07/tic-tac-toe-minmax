@@ -9,7 +9,6 @@ class Board
 private:
 	int n;
 	vector<vector<char>> fields;
-	bool player=0;
 public:
 	Board(int n);
 	void Print();
@@ -17,8 +16,9 @@ public:
 	void MakeMove(int, int, char);
 	void MakeMove(int, int, bool);
 	char CheckWin();
-	char CheckField(int column, int row) { char temp;  temp = fields[column][row]; return temp; }
-	bool CheckPlayer() { return player; }
+	bool MovesLeft();
+	char& operator()(int, int);
+	char CheckField(int, int);
 
 };
 

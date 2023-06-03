@@ -1,25 +1,40 @@
 #include<iostream>
 #include<vector>
 
-#include"game.h"
-//#include"Field.h"
-#include"Bot.h"
+
+#include"minmax.h"
+
+
+
 
 int main()
 {
-	//Play();
-	Board b(2);
-	
-		b.Print();
+	Board board(5);
+
+
+	while (1)
+	{
 		int x, y;
-		std::cin >> x >> y;
-		b.MakeMove(x-1, y-1, 'O');
-		//b.Print();
-		Evaluate(b);
-		b.Print();
-
-	
-	
-
-
+		cin >> y >> x;
+		board(y, x) = 'O';
+		findBestMove(board,6);
+		board.Print();
+	}
+	cout << board.Size()<<"\n";
+	for (int i = 0; i < 3; i++)
+	{
+		for (int j = 0; j < 3; j++)
+		{
+			if (board(i, j) == NULL)
+				cout << "#";
+			else
+				cout << board(i, j);
+		}
+		cout << endl;
+	}
+		
+	return 0;
 }
+
+
+

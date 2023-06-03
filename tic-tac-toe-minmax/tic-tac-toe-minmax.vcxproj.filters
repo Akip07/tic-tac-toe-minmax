@@ -29,8 +29,8 @@
     <ClInclude Include="Field.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Bot.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="minmax.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -17,10 +17,7 @@ void Play()
 	while (1)
 	{
 		
-		if (b.CheckPlayer())
-			p = 'X';
-		else
-			p = 'O';
+	
 
 		system("cls");
 		b.Print();
