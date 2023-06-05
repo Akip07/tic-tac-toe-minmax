@@ -2,8 +2,6 @@
 #include <iostream>
 #include"Field.h"
 
-using namespace std;
-
 struct Move
 {
 	int row, col;
@@ -82,49 +80,42 @@ int evaluate(Board b)
 			if (field == player)
 				return +10;
 			else if (field == opponent)
-				return  -10;
+				return (-10);
 		}
 	}
 
 	return 0;
 }
 
-// This is the minimax function. It considers all
-// the possible ways the game can go and returns
-// the value of the board
-int minimax(Board board, int depth, bool isMax, int maxdepth, int alpha=-10000, int beta=10000)
+
+int minimax(Board board, int depth, bool isMax, int maxdepth, int alpha = -10000, int beta = 10000)
 {
 	char null = NULL;
 	int score = evaluate(board);
 
-	if (score != 0|| depth == maxdepth)
+	if (score != 0 || depth == maxdepth)
 		return score;
 
-	// If there are no more moves and no winner then
-	// it is a tie
+
 	if (board.MovesLeft() == false)
 		return 0;
 
-	// If this maximizer's move
 	if (isMax)
 	{
 		int best = -1000;
 
-		// Traverse all cells
 		for (int i = 0; i < board.Size(); i++)
 		{
 			for (int j = 0; j < board.Size(); j++)
 			{
-				// Check if cell is empty
 				if (board(i, j) == NULL)
 				{
-					// Make the move
 					board(i, j) = player;
 
 					int temp = minimax(board, depth + 1, !isMax, maxdepth, alpha, beta);
-					best = max(best,temp);
-					alpha = max(alpha, temp);
-					
+					best = std::max(best, temp);
+					alpha = std::max(alpha, temp);
+
 
 					board(i, j) = NULL;
 					if (beta <= alpha)
@@ -139,30 +130,24 @@ int minimax(Board board, int depth, bool isMax, int maxdepth, int alpha=-10000, 
 		return best;
 	}
 
-	
+
 	else
 	{
 		int best = 1000;
 
-		// Traverse all cells
 		for (int i = 0; i < board.Size(); i++)
 		{
 			for (int j = 0; j < board.Size(); j++)
 			{
-				// Check if cell is empty
 				if (board(i, j) == NULL)
 				{
-					// Make the move
 					board(i, j) = opponent;
 
 
-					// Call minimax recursively and choose
-					// the minimum value
 					int temp = minimax(board, depth + 1, !isMax, maxdepth, alpha, beta);
-					best = min(best, temp);
-					beta = min(beta, temp);
-					
-					// Undo the move
+					best = std::min(best, temp);
+					beta = std::min(beta, temp);
+
 					board(i, j) = NULL;
 
 					if (beta <= alpha)
@@ -178,8 +163,7 @@ int minimax(Board board, int depth, bool isMax, int maxdepth, int alpha=-10000, 
 	}
 }
 
-// This will return the best possible move for the player
-void findBestMove(Board& board, int maxdepth)
+Move BotMove(Board& board, int maxdepth)
 {
 	char null = NULL;
 	int bestVal = -1000;
@@ -187,31 +171,18 @@ void findBestMove(Board& board, int maxdepth)
 	bestMove.row = -1;
 	bestMove.col = -1;
 
-	// Traverse all cells, evaluate minimax function for
-	// all empty cells. And return the cell with optimal
-	// value.
 	for (int i = 0; i < board.Size(); i++)
 	{
 		for (int j = 0; j < board.Size(); j++)
 		{
-			// Check if cell is empty
 			if (board(i, j) == NULL)
 			{
-				// Make the move
 				board(i, j) = player;
-				//board.MakeMove(i, j, player);
 
-				// compute evaluation function for this
-				// move.
 				int moveVal = minimax(board, 0, false, maxdepth);
 
-				// Undo the move
 				board(i, j) = NULL;
-				//board.MakeMove(i, j, null);
 
-				// If the value of the current move is
-				// more than the best value, then update
-				// best/
 				if (moveVal > bestVal)
 				{
 					bestMove.row = i;
@@ -223,6 +194,6 @@ void findBestMove(Board& board, int maxdepth)
 	}
 
 	board.MakeMove(bestMove.row, bestMove.col, 'X');
+	return bestMove;
 
-	//return bestMove;
 }

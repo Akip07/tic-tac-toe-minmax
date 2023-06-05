@@ -3,7 +3,8 @@
 #include<iostream>
 #include "Field.h"
 #include<vector>
-//#include "Bot.h"
+#include "minmax.h"
+#include <conio.h>
 using std::cout;
 
 
@@ -13,36 +14,56 @@ void Play()
 	cout << "Podaj liczbe pol:\n";
 	std::cin >> n;
 	Board b(n);
-	char p=0;
+	int depth;
+	if (n == 3)
+		depth = 10;
+	else
+		depth = 7;
+	bool isBot=1;
 	while (1)
 	{
-		
-	
-
+		isBot = !isBot;
 		system("cls");
 		b.Print();
-
-		cout << "Ruch gracza "<<p<<"\nPodaj wspolrzedne pola do zmiany(x, y) :\n";
-		int x, y;
-		while (1)
+		
+		if (isBot == false)
 		{
-			std::cin >> x >> y;
-			if (x >= 0 &&y>=0&&x<n&&y<n&& !b.CheckField(y, x))
+			
+			std::cout << "\nRuch gracza O\nWybierz pole (rzad, kolumna)\n";
+			int row, col;
+			while(1)
+
 			{
-				b.MakeMove(x, y, p);
-				break;
+				
+				std::cin >> row >> col;
+				if (0 <= row && 0<=col && row< n && col < n)
+					break;
+				else
+					std::cout << "wybrana wartosc jest niepoprawna, wybierz wartosc w zakresie od 0 do " << n << "\n";
+
 			}
-			else
-			{
-				std::cout<<"wybierz poprawna wartosc";
-			}
+			b.MakeMove(row, col, isBot);
+
 		}
+		else
+		{
+			std::cout << "Bot wykonuje ruch...\n";
+			Move bm = BotMove(b, depth);
+			system("cls");
+			std::cout << "bot wykonal ruch:\trzad: " << bm.row << "\tkolumna: " << bm.col << "\n";
+			b.Print();
+			std::cout << "nacisnij dowolny przycisk by kontynuowac\n";
+
+			_getch();
+		}
+
 		if (b.CheckWin())
 		{
 			break;
 		}
 
 	}
-	cout << "\nZWYCIEZCA: GRACZ "<<p;
+	cout << "\nZWYCIEZCA:"<<b.CheckWin();
+	
 
 }

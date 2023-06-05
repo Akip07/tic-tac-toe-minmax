@@ -66,7 +66,7 @@ void Board::MakeMove(int y, int x, bool p)
 		v = 'X';
 	else
 		v = 'O';
-	MakeMove(x, y, v);
+	MakeMove(y, x, v);
 }
 
 char Board::CheckWin()
@@ -87,19 +87,7 @@ char Board::CheckWin()
 		}
 	}
 
-	//Checking for Columns for X or O victory.
-   //for (int col = 0; col < b.Size(); col++)
-   //{
-   //	if (b(0, col) == b(1, col) &&
-   //		b(1, col) == b(2, col))
-   //	{
-   //		if (b(0, col) == player)
-   //			return +10;
 
-   //		else if (b(0, col) == opponent)
-   //			return -10;
-   //	}
-   //}
 	for (int col = 0; col < Size(); col++)
 	{
 		char field = (0, col);
@@ -116,14 +104,7 @@ char Board::CheckWin()
 		}
 	}
 
-	// Checking for Diagonals for X or O victory.
-	//if (b(0, 0) == b(1, 1) && b(1, 1) == b(2, 2))
-	//{
-	//	if (b(0, 0) == player)
-	//		return +10;
-	//	else if (b(0, 0) == opponent)
-	//		return -10;
-	//}
+
 	char field = (0, 0);
 	for (int i = 1; i < Size(); i++)
 	{
@@ -137,13 +118,7 @@ char Board::CheckWin()
 		}
 	}
 
-	//if (b(0, 2) == b(1, 1) && b(1, 1) == b(2, 0))
-	//{
-	//	if (b(0, 2) == player)
-	//		return +10;
-	//	else if (b(0, 2) == opponent)
-	//		return -10;
-	//}
+
 	field = (0, Size() - 1);
 	for (int i = 0; i < Size(); i++)
 	{
@@ -156,7 +131,7 @@ char Board::CheckWin()
 			return field;
 		}
 	}
-	// Else if none of them have won then return 0
+
 	return 0;
 }
 
