@@ -7,10 +7,10 @@ struct Move
 	int row, col;
 };
 
-char player = 'X', opponent = 'O';
+char bot = 'X', opponent = 'O';
 
 
-int evaluate(Board b)
+int Score(Board b)
 {
 	for (int row = 0; row < b.Size(); row++)
 	{
@@ -23,7 +23,7 @@ int evaluate(Board b)
 			}
 			else if (col == b.Size() - 1)
 			{
-				if (b(row, 0) == player)
+				if (b(row, 0) == bot)
 					return +10;
 				else if (b(row, 0) == opponent)
 					return -10;
@@ -43,7 +43,7 @@ int evaluate(Board b)
 			}
 			else if (row == b.Size() - 1)
 			{
-				if (field == player)
+				if (field == bot)
 					return +10;
 				else if (field == opponent)
 					return -10;
@@ -61,7 +61,7 @@ int evaluate(Board b)
 		}
 		else if (i == (b.Size() - 1))
 		{
-			if (field == player)
+			if (field == bot)
 				return +10;
 			else if (field == opponent)
 				return  -10;
@@ -77,7 +77,7 @@ int evaluate(Board b)
 		}
 		else if (i == b.Size() - 1)
 		{
-			if (field == player)
+			if (field == bot)
 				return +10;
 			else if (field == opponent)
 				return (-10);
@@ -88,10 +88,9 @@ int evaluate(Board b)
 }
 
 
-int minimax(Board board, int depth, bool isMax, int maxdepth, int alpha = -10000, int beta = 10000)
+int Minimax(Board board, int depth, bool isMax, int maxdepth, int alpha = -10000, int beta = 10000)
 {
-	char null = NULL;
-	int score = evaluate(board);
+	int score = Score(board);
 
 	if (score != 0 || depth == maxdepth)
 		return score;
@@ -110,22 +109,20 @@ int minimax(Board board, int depth, bool isMax, int maxdepth, int alpha = -10000
 			{
 				if (board(i, j) == NULL)
 				{
-					board(i, j) = player;
+					board(i, j) = bot;
 
-					int temp = minimax(board, depth + 1, !isMax, maxdepth, alpha, beta);
+					int temp = Minimax(board, depth + 1, !isMax, maxdepth, alpha, beta);
 					best = std::max(best, temp);
 					alpha = std::max(alpha, temp);
 
 
 					board(i, j) = NULL;
 					if (beta <= alpha)
-						break;
+						return best;
 				}
-				if (beta <= alpha)
-					break;
+				
 			}
-			if (beta <= alpha)
-				break;
+			
 		}
 		return best;
 	}
@@ -144,20 +141,18 @@ int minimax(Board board, int depth, bool isMax, int maxdepth, int alpha = -10000
 					board(i, j) = opponent;
 
 
-					int temp = minimax(board, depth + 1, !isMax, maxdepth, alpha, beta);
+					int temp = Minimax(board, depth + 1, !isMax, maxdepth, alpha, beta);
 					best = std::min(best, temp);
 					beta = std::min(beta, temp);
 
 					board(i, j) = NULL;
 
 					if (beta <= alpha)
-						break;
+						return best;
 				}
-				if (beta <= alpha)
-					break;
+				
 			}
-			if (beta <= alpha)
-				break;
+			
 		}
 		return best;
 	}
@@ -177,9 +172,9 @@ Move BotMove(Board& board, int maxdepth)
 		{
 			if (board(i, j) == NULL)
 			{
-				board(i, j) = player;
+				board(i, j) = bot;
 
-				int moveVal = minimax(board, 0, false, maxdepth);
+				int moveVal = Minimax(board, 0, false, maxdepth);
 
 				board(i, j) = NULL;
 
